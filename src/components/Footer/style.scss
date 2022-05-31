@@ -1,0 +1,20 @@
+.footer {
+    padding: 60px 0;
+    text-align: center;
+
+    &__social {
+        svg {
+            font-size: 30px;
+        }
+        margin-bottom: 30px;
+    }
+    p{
+        font-size: 18px;
+        span{
+            text-decoration: underline;
+            &:hover {
+                color: #ff6500;
+            }
+        }
+    }
+}

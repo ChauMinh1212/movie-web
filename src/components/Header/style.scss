@@ -1,0 +1,171 @@
+@import '../../app/mixin.scss';
+.header {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  position: relative;
+  &__top {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include mobileAndTablet{
+      justify-content: center;
+    }
+  }
+  &__button--login {
+    @include mobileAndTablet{
+      display: none;
+    }
+    font-size: 14px;
+    background-color: transparent;
+    border: none;
+    color: #9b9b9b;
+    cursor: pointer;
+    &:hover {
+      color: #ff6500;
+      transition: color 0.3s ease;
+    }
+  }
+  &__avatar {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  &__searchForm {
+    flex: 1;
+    width: 100%;
+    margin: 0 20px 0 20px;
+    position: relative;
+    @include mobileAndTablet{
+      display: none;
+    }
+    &__btn{
+      position: absolute;
+      right: 0;
+      height: 100%;
+      font-size: 20px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      &:hover svg{
+        color: #a9a2a2;
+      }
+      svg {
+        font-size: 30px;
+        color: #939191;
+      }
+    }
+  }
+  .MuiFilledInput-input {
+    color: #fff;
+    font-size: 15px;
+    padding-right: 42px;
+  }
+  .MuiInputLabel-root {
+    color: #939191;
+    line-height: normal;
+  }
+  .MuiInputLabel-root.Mui-focused {
+    color: #ff6500;
+    font-size: 13px;
+  }
+  .MuiFormControl-root {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
+  &__bot {
+    text-align: center;
+    margin-top: 20px;
+
+    @include mobileAndTablet{
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      text-align: left;
+      margin-top: 0;
+      width: 250px;
+      background-color: #fff;
+      z-index: 4;
+      height: 100vh;
+    }
+    &__categoryList {
+      
+    }
+    &__category {
+      display: inline-block;
+      padding: 6px 11px 10px;
+      color: #9b9b9b;
+      font-size: 16xp;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      @include mobileAndTablet{
+        display: block;
+        border-bottom: none;
+        color: #1f1f1f;
+        font-weight: 400;
+        padding: 20px;
+      }
+      @include smallScreen{
+        padding: 6px 5px 10px;
+        font-size: 15px;
+      }
+      &:hover {
+        color: #ff6500;
+        transition: color 0.4s ease;
+        @include mobileAndTablet{
+          background-color: rgba(0,0,0,.05);
+          transition: color 0.2s ease;
+
+        }
+      }
+      &.active {
+        &:hover {
+          color: #ff6500;
+          transition: color 0.4s ease;
+          
+        }
+        color: #fff;
+        border-bottom: 3px solid #ff6500;
+        @include mobileAndTablet{
+         border-bottom: none;   
+         color: #1f1f1f;
+        }
+      }
+    }
+  }
+  &_subMenu-btn {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+    top: 11px;
+    display: none;
+    @include mobileAndTablet{
+      display: block;
+    }
+    svg {
+      color: #fff;
+      &:hover {
+        color: #ff6500;
+        transition: color .3s ease;
+      }
+    }
+  }
+  .overplay {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #1f1f1f;
+    opacity: .6;
+  }
+}

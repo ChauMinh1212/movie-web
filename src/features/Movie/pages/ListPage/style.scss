@@ -1,0 +1,21 @@
+@import '../../../../app/mixin.scss';
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    background-color: #ff6500!important;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root{
+    color: #fff!important;
+}
+.css-wjh20t-MuiPagination-ul {
+    justify-content: center;
+}
+.MuiSkeleton-root {
+    @include tablet {
+        height: 306px;
+    };
+    @include smallScreen {
+        height: 304px;
+    };
+    @include mobile{
+        height: 272px;
+    };
+}
