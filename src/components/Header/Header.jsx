@@ -55,7 +55,7 @@ function Header(props) {
 
   console.log(user);
 
-  const isLogged = !!user.uid;
+  const isLogged = !!user?.uid;
 
   const handleClickLogin = () => {
     const action = loginWithGoogle();
