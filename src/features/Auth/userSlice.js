@@ -5,6 +5,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { db } from './firebaseConfig'
+import { setDoc, doc } from "firebase/firestore"; 
+import { getAdditionalUserInfo } from "firebase/auth";
 
 const providers = {
   Gprovider: new GoogleAuthProvider(),
@@ -14,14 +17,21 @@ const providers = {
 export const loginWithGoogle = createAsyncThunk("user/loginGG", async () => {
   try {
     const result = await signInWithPopup(auth, providers.Gprovider);
+    const details = getAdditionalUserInfo(result)
 
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
+    const token = result.user.accessToken;
     // The signed-in user info.
     const {displayName, email, photoURL, uid} = result.user;
-    console.log(result.user);
     localStorage.setItem("access_token", token);
     localStorage.setItem("user", JSON.stringify({displayName, email, photoURL, uid}));
+
+    if(details.isNewUser) {
+      await setDoc(doc(db, "users", uid), {
+        displayName, email, photoURL, uid, followsID: []
+      });
+    }
+
+
     return {displayName, email, photoURL, uid}
   } catch (error) {
     // Handle Errors here.

@@ -12,12 +12,16 @@ import { updateCategory } from "../../categorySlice";
 import SwiperSlider from "../../../../components/SwiperSilder";
 import MovieListSkeleton from "../../components/MovieListSkeleton";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import queryString from "query-string";
+import { useMemo } from "react";
 
 ListPage.propTypes = {};
 
 function ListPage(props) {
-  const navigate = useNavigate()
-  console.log(window.location.pathname);
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
+  const queryParams = queryString.parse(location.search);
 
   const [loading, setLoading] = useState(true);
   const [movieList, setMovieList] = useState([]);
@@ -31,23 +35,25 @@ function ListPage(props) {
   console.log(param.value);
 
   const movieSlide = [...movieList].slice(0, 5);
-
   const cate = useSelector((state) => state.category);
 
   const [filter, setFilter] = useState({
-    page: 1,
+    page: Number.parseInt(queryParams.page) || 1,
   });
 
   const [searchFilter, setSearchFilter] = useState({
-    page: 1
-  })
+    page: Number.parseInt(queryParams.page) || 1,
+  });
 
   useEffect(() => {
     setLoading(true);
     const getMovieList = async () => {
       let result = [];
       if (param.value) {
-        result = await movieApi.getSearch({...searchFilter, query: param.value});
+        result = await movieApi.getSearch({
+          ...searchFilter,
+          query: param.value,
+        });
       } else {
         result = await movieApi.getAll({ ...filter, with_genres: cate });
       }
@@ -61,18 +67,16 @@ function ListPage(props) {
     };
     getMovieList();
     window.scrollTo(0, 0);
-    return () => {
-    }
-    
+    return () => {};
   }, [filter, cate, param.value, searchFilter]);
 
   const handleChangePage = (e, page) => {
-    if(param.value){
+    if (param.value) {
       setSearchFilter((x) => ({
         ...x,
-        page: page
-      }))
-    }else{
+        page: page,
+      }));
+    } else {
       setFilter((x) => ({
         ...x,
         page: page,
@@ -80,6 +84,41 @@ function ListPage(props) {
     }
     console.log(("page", page));
   };
+
+  useEffect(() => {
+    if(param.value){
+      if (location.pathname == "/") {
+        navigate(`?${queryString.stringify(searchFilter)}`, {replace: true});
+      } else {
+        navigate(`${location.pathname}?${queryString.stringify(searchFilter)}`, {replace: true});
+      }
+    }else {
+      if (location.pathname == "/") {
+        navigate(`?${queryString.stringify(filter)}`, {replace: true});
+      } else {
+        navigate(`${location.pathname}?${queryString.stringify(filter)}`, {replace: true});
+      }
+    }
+
+  }, [filter.page, searchFilter.page, param.value, cate]);
+
+  useMemo(() => {
+    setFilter(x => ({
+      ...x,
+      page: 1
+    }))
+  }, [cate])
+
+  useMemo(() => {
+    setFilter((x) => ({
+      ...x,
+      page: Number.parseInt(queryParams.page) || 1,
+    }));
+    setSearchFilter((x) => ({
+      ...x,
+      page: Number.parseInt(queryParams.page) || 1,
+    }));
+  }, [location.search]);
 
   return (
     <>

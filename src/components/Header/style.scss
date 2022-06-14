@@ -1,4 +1,4 @@
-@import '../../app/mixin.scss';
+@import "../../app/mixin.scss";
 .header {
   padding-top: 10px;
   padding-bottom: 5px;
@@ -8,12 +8,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @include mobileAndTablet{
+    @include mobileAndTablet {
       justify-content: center;
     }
   }
   &__button--login {
-    @include mobileAndTablet{
+    @include mobileAndTablet {
       display: none;
     }
     font-size: 14px;
@@ -31,19 +31,81 @@
     height: 43px;
     border-radius: 50%;
     overflow: hidden;
+    cursor: pointer;
     img {
       width: 100%;
     }
+  }
+  &__menu {
+    position: relative;
+  }
+  &__submenu {
+    position: absolute;
+    right: 0;
+    top: 55px;
+    background-color: #f1f1f1;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    animation: opa .4s ease-in;
+    &::before{
+      content: "";
+      position: absolute;
+      top: -11px;
+      right: 12px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 11px solid #f1f1f1;
+    }
+    display: none;
+    @keyframes opa {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    &__child {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      z-index: 3;
+      &:hover {
+        background-color: #ddd;
+        cursor: pointer;
+      }
+    }
+    &__icon {
+      width: 36px;
+      margin-right: 10px;
+      svg {
+        font-size: 2rem;
+      }
+    }
+    &__img {
+      width: 100%;
+      border-radius: 50%;
+    }
+    &__name {
+      font-size: 20px;
+      flex: 1;
+      white-space: nowrap;
+    }
+  }
+  &__submenu.show{
+    display: block;
   }
   &__searchForm {
     flex: 1;
     width: 100%;
     margin: 0 20px 0 20px;
     position: relative;
-    @include mobileAndTablet{
+    @include mobileAndTablet {
       display: none;
     }
-    &__btn{
+    &__btn {
       position: absolute;
       right: 0;
       height: 100%;
@@ -51,7 +113,7 @@
       background-color: transparent;
       border: none;
       cursor: pointer;
-      &:hover svg{
+      &:hover svg {
         color: #a9a2a2;
       }
       svg {
@@ -78,11 +140,12 @@
     margin-bottom: 0;
     width: 100%;
   }
+
   &__bot {
     text-align: center;
     margin-top: 20px;
 
-    @include mobileAndTablet{
+    @include mobileAndTablet {
       display: none;
       position: fixed;
       top: 0;
@@ -95,7 +158,6 @@
       height: 100vh;
     }
     &__categoryList {
-      
     }
     &__category {
       display: inline-block;
@@ -106,37 +168,35 @@
       font-weight: 600;
       border-bottom: 3px solid transparent;
       cursor: pointer;
-      @include mobileAndTablet{
+      @include mobileAndTablet {
         display: block;
         border-bottom: none;
         color: #1f1f1f;
         font-weight: 400;
         padding: 20px;
       }
-      @include smallScreen{
+      @include smallScreen {
         padding: 6px 5px 10px;
         font-size: 15px;
       }
       &:hover {
         color: #ff6500;
         transition: color 0.4s ease;
-        @include mobileAndTablet{
-          background-color: rgba(0,0,0,.05);
+        @include mobileAndTablet {
+          background-color: rgba(0, 0, 0, 0.05);
           transition: color 0.2s ease;
-
         }
       }
       &.active {
         &:hover {
           color: #ff6500;
           transition: color 0.4s ease;
-          
         }
         color: #fff;
         border-bottom: 3px solid #ff6500;
-        @include mobileAndTablet{
-         border-bottom: none;   
-         color: #1f1f1f;
+        @include mobileAndTablet {
+          border-bottom: none;
+          color: #1f1f1f;
         }
       }
     }
@@ -147,14 +207,14 @@
     cursor: pointer;
     top: 11px;
     display: none;
-    @include mobileAndTablet{
+    @include mobileAndTablet {
       display: block;
     }
     svg {
       color: #fff;
       &:hover {
         color: #ff6500;
-        transition: color .3s ease;
+        transition: color 0.3s ease;
       }
     }
   }
@@ -166,6 +226,6 @@
     left: 0;
     bottom: 0;
     background-color: #1f1f1f;
-    opacity: .6;
+    opacity: 0.6;
   }
 }

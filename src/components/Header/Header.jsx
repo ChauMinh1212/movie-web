@@ -9,6 +9,7 @@ import {
   Menu,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
 import SearchField from "../form-control/SearchFiled";
 import { useForm } from "react-hook-form";
@@ -28,6 +29,8 @@ import { useResizeDetector } from "react-resize-detector";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { db } from "../../features/Auth/firebaseConfig";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 Header.propTypes = {};
 
@@ -67,14 +70,14 @@ function Header(props) {
     dispatch(action);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openSubMenu = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenSubMenu = () => {
+    document.querySelector(".header__submenu").classList.toggle("show");
   };
 
-  const handleCloseSubMenu = () => {
-    setAnchorEl(null);
+  window.onclick = function (event) {
+    if (!event.target.matches(".header__avatar")) {
+      document.querySelector(".header__submenu").classList.remove("show");
+    }
   };
 
   const [category, setCategory] = useState([]);
@@ -98,29 +101,26 @@ function Header(props) {
     }
   };
 
-  
-
   const matches = useMediaQuery("(max-width: 820px)");
   console.log(matches);
 
-  if(matches === false) {
+  if (matches === false) {
     const headerMenu = document.querySelector(".header__bot");
     const overplay = document.querySelector(".overplay");
-    if(headerMenu){
+    if (headerMenu) {
       headerMenu.style.display = "block";
     }
-  }else{
+  } else {
     const headerMenu = document.querySelector(".header__bot");
-    if(headerMenu){
+    if (headerMenu) {
       headerMenu.style.display = "none";
     }
-
   }
 
   return (
     <div className="header">
       <div className="header__top">
-        <Link to="/">
+        <Link to="/?page=1">
           <img src="https://fptplay.vn/images/logo-2.png" alt="logo" />
         </Link>
         <form
@@ -142,64 +142,43 @@ function Header(props) {
           </button>
         )}
         {isLogged && (
-          <>
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              aria-controls={openSubMenu ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={openSubMenu ? "true" : undefined}
-            >
-              <div className="header__avatar">
-                <img src={user.photoURL} referrerpolicy="no-referrer"></img>
+          <div className="header__menu">
+            <img
+              className="header__avatar"
+              src={user.photoURL}
+              referrerpolicy="no-referrer"
+              onClick={handleOpenSubMenu}
+            ></img>
+            <div className="header__submenu">
+              <div className="header__submenu__child">
+                <p className="header__submenu__icon">
+                  <img
+                    className="header__submenu__img"
+                    src={user.photoURL}
+                    referrerpolicy="no-referrer"
+                  />
+                </p>
+                <p className="header__submenu__name">{user.displayName}</p>
               </div>
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={openSubMenu}
-              onClose={handleCloseSubMenu}
-              onClick={handleCloseSubMenu}
-              PaperProps={{
-                elevation: 0,
-                sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 32,
-                    height: 32,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
-              }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
-              <MenuItem>
-                <Avatar /> {user.displayName}
-              </MenuItem>
-              <MenuItem onClick={handleClickLogOut}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
-            </Menu>
-          </>
+              <Link to="/your-follow" style={{textDecoration: 'none', color:'#555555' }}>
+                <div className="header__submenu__child">
+                  <p className="header__submenu__icon">
+                    <FavoriteIcon></FavoriteIcon>
+                  </p>
+                  <p className="header__submenu__name">My Follows</p>
+                </div>
+              </Link>
+              <div
+                className="header__submenu__child"
+                onClick={handleClickLogOut}
+              >
+                <p className="header__submenu__icon">
+                  <Logout></Logout>
+                </p>
+                <p className="header__submenu__name">Log out</p>
+              </div>
+            </div>
+          </div>
         )}
       </div>
       <div className="header__bot">
