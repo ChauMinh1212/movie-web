@@ -100,7 +100,7 @@ function Header(props) {
   return (
     <div className="header">
       <div className="header__top">
-        <Link to="/?page=1">
+        <Link to="/?page=1" onClick={() => handleOnChangeCategory(null)}>
           <img src="https://fptplay.vn/images/logo-2.png" alt="logo" />
         </Link>
         <form
