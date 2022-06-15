@@ -1,7 +1,6 @@
-import React from "react";
 import PropTypes from "prop-types";
-import "./style.scss";
 import { Link } from "react-router-dom";
+import "./style.scss";
 
 MovieList.propTypes = {
   movieList: PropTypes.array,

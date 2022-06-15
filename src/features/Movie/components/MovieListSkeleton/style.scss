@@ -1,21 +1,21 @@
-@import '../../../../app/mixin.scss';
+@import "../../../../app/mixin.scss";
 .movie_skeleton {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -10px;
-    margin-top: 23px;
-    margin-bottom: 36px;
-    &_box{
-        width: calc(calc(100% /5) - 10px);
-        margin-right: 10px;
-        @include smallScreen{
-            width: calc(25% - 10px);
-        }
-        @include tablet{
-            width: calc(calc(100% / 3) - 10px);
-        }
-        @include mobile{
-            width: calc(50% - 10px);
-        }
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-top: 23px;
+  margin-bottom: 36px;
+  &_box {
+    width: calc(calc(100% / 5) - 10px);
+    margin-right: 10px;
+    @include smallScreen {
+      width: calc(25% - 10px);
     }
+    @include tablet {
+      width: calc(calc(100% / 3) - 10px);
+    }
+    @include mobile {
+      width: calc(50% - 10px);
+    }
+  }
 }

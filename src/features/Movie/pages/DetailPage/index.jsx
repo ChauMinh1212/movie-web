@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useParams } from "react-router-dom";
-import movieApi from "../../../../api/movieApi";
-import "./style.scss";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import Skeleton from "@mui/material/Skeleton";
-import { Box } from "@mui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {
-  doc,
-  onSnapshot,
-  updateDoc,
-  getDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db } from "../../../Auth/firebaseConfig";
+import { Box } from "@mui/system";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import movieApi from "../../../../api/movieApi";
+import { db } from "../../../Auth/firebaseConfig";
+import "./style.scss";
 
 DetailPage.propTypes = {};
 
@@ -27,20 +20,22 @@ function DetailPage(props) {
   const param = useParams();
   const [movie, setMovie] = useState({});
   const [loading, setLoading] = useState(true);
-  const  uid  = useSelector((state) => state.user.current?.uid);
+  const uid = useSelector((state) => state.user.current?.uid);
   const [isFollow, setIsFollow] = useState(false);
   const [followsID, setFollowsID] = useState([]);
 
   // const unsub = onSnapshot(doc(db, "users", uid), (doc) => {
   //   setFollowsID(doc.data().followsID)
   // });
-  const getdoc = async () => {
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
-    setFollowsID(docSnap.data().followsID);
-    setIsFollow(docSnap.data().followsID.includes(movie.id));
-  };
-  getdoc();
+  if (uid) {
+    const getdoc = async () => {
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      setFollowsID(docSnap.data().followsID);
+      setIsFollow(docSnap.data().followsID.includes(movie.id));
+    };
+    getdoc();
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -54,7 +49,7 @@ function DetailPage(props) {
   }, []);
 
   const handleFollow = async () => {
-    if(uid) {
+    if (uid) {
       const washingtonRef = doc(db, "users", uid);
       const newFollowsID = [...followsID];
       newFollowsID.push(movie.id);
@@ -62,8 +57,7 @@ function DetailPage(props) {
         followsID: newFollowsID,
       });
       setIsFollow(true);
-    }else {
-
+    } else {
     }
   };
 
@@ -154,16 +148,27 @@ function DetailPage(props) {
           <div className="movie_detail_desc">
             <p className="movie_detail_desc_title">{movie.original_title}</p>
             <div className="movie_detail_desc_btn">
-              {isFollow && !!uid ? (<button  onClick={handleUnfollow} className="movie_detail_desc_btn--unfollow">
-                <FavoriteIcon />
-                <span>Unfollow</span>
-              </button>) : <button onClick={handleFollow} type="button" className="movie_detail_desc_btn--follow" disabled={!uid}>
-                <FavoriteIcon />
-                <span >Follow</span>
-                <p className="follow_alert">Please login to follow movie</p>
-              </button>
-              }
-              
+              {isFollow && !!uid ? (
+                <button
+                  onClick={handleUnfollow}
+                  className="movie_detail_desc_btn--unfollow"
+                >
+                  <FavoriteIcon />
+                  <span>Unfollow</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleFollow}
+                  type="button"
+                  className="movie_detail_desc_btn--follow"
+                  disabled={!uid}
+                >
+                  <FavoriteIcon />
+                  <span>Follow</span>
+                  <p className="follow_alert">Please login to follow movie</p>
+                </button>
+              )}
+
               <button className="movie_detail_desc_btn--share">
                 <ShareIcon />
                 <span>Share</span>

@@ -1,36 +1,19 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import "./style.scss";
-import {
-  Avatar,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
-import SearchField from "../form-control/SearchFiled";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  loginWithFacebook,
-  loginWithGoogle,
-} from "../../features/Auth/userSlice";
 import { Logout } from "@mui/icons-material";
-import { logOut } from "../../features/Auth/userSlice";
-import categoryApi from "../../api/categoryApi";
-import { Tab, TabList, Tabs } from "react-tabs";
-import { updateCategory } from "../../features/Movie/categorySlice";
-import { useResizeDetector } from "react-resize-detector";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { db } from "../../features/Auth/firebaseConfig";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import categoryApi from "../../api/categoryApi";
+import { loginWithGoogle, logOut } from "../../features/Auth/userSlice";
+import { updateCategory } from "../../features/Movie/categorySlice";
+import SearchField from "../form-control/SearchFiled";
+import "./style.scss";
 
 Header.propTypes = {};
 
@@ -56,8 +39,6 @@ function Header(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.current);
 
-  console.log(user);
-
   const isLogged = !!user?.uid;
 
   const handleClickLogin = () => {
@@ -71,12 +52,12 @@ function Header(props) {
   };
 
   const handleOpenSubMenu = () => {
-    document.querySelector(".header__submenu").classList.toggle("show");
+    document.querySelector(".header__submenu")?.classList.toggle("show");
   };
 
   window.onclick = function (event) {
     if (!event.target.matches(".header__avatar")) {
-      document.querySelector(".header__submenu").classList.remove("show");
+      document.querySelector(".header__submenu")?.classList.remove("show");
     }
   };
 
@@ -102,7 +83,6 @@ function Header(props) {
   };
 
   const matches = useMediaQuery("(max-width: 820px)");
-  console.log(matches);
 
   if (matches === false) {
     const headerMenu = document.querySelector(".header__bot");
@@ -146,7 +126,7 @@ function Header(props) {
             <img
               className="header__avatar"
               src={user.photoURL}
-              referrerpolicy="no-referrer"
+              referrerPolicy="no-referrer"
               onClick={handleOpenSubMenu}
             ></img>
             <div className="header__submenu">
@@ -160,7 +140,10 @@ function Header(props) {
                 </p>
                 <p className="header__submenu__name">{user.displayName}</p>
               </div>
-              <Link to="/your-follow" style={{textDecoration: 'none', color:'#555555' }}>
+              <Link
+                to="/your-follow"
+                style={{ textDecoration: "none", color: "#555555" }}
+              >
                 <div className="header__submenu__child">
                   <p className="header__submenu__icon">
                     <FavoriteIcon></FavoriteIcon>
@@ -184,7 +167,7 @@ function Header(props) {
       <div className="header__bot">
         <ul className="header__bot__categoryList">
           <NavLink
-            to="/"
+            to="/?page=1"
             className="header__bot__category"
             onClick={() => handleOnChangeCategory(null)}
           >
@@ -193,7 +176,7 @@ function Header(props) {
           {category.map((x) => (
             <NavLink
               onClick={() => handleOnChangeCategory(x.id)}
-              to={`/category/${x.name}`}
+              to={`/category/${x.name}?page=1`}
               key={x.id}
               className="header__bot__category"
             >

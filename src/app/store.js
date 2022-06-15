@@ -1,15 +1,15 @@
-import userReducer from '../features/Auth/userSlice'
-import categoryReducer from '../features/Movie/categorySlice'
+import userReducer from "../features/Auth/userSlice";
+import categoryReducer from "../features/Movie/categorySlice";
 
-import {configureStore} from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = {
-    user: userReducer,
-    category: categoryReducer,
-}
+  user: userReducer,
+  category: categoryReducer,
+};
 
 const store = configureStore({
-    reducer: rootReducer,
-})
+  reducer: rootReducer,
+});
 
-export default store
+export default store;

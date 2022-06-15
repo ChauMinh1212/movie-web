@@ -1,21 +1,21 @@
-@import '../../../../app/mixin.scss';
+@import "../../../../app/mixin.scss";
 .MuiPaginationItem-root.Mui-selected {
-    background-color: #ff6500!important;
+  background-color: #ff6500 !important;
 }
-.MuiPaginationItem-root{
-    color: #fff!important;
+.MuiPaginationItem-root {
+  color: #fff !important;
 }
 .MuiPagination-ul {
-    justify-content: center;
+  justify-content: center;
 }
 .MuiSkeleton-root {
-    @include tablet {
-        height: 306px;
-    };
-    @include smallScreen {
-        height: 304px;
-    };
-    @include mobile{
-        height: 272px;
-    };
+  @include tablet {
+    height: 306px;
+  }
+  @include smallScreen {
+    height: 304px;
+  }
+  @include mobile {
+    height: 272px;
+  }
 }

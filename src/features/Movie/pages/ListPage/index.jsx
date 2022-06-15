@@ -1,26 +1,20 @@
-import React, { useDebugValue, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import categoryApi from "../../../../api/categoryApi";
-import movieApi from "../../../../api/movieApi";
-import MovieList from "../../components/MovieList";
 import { Pagination, Stack } from "@mui/material";
-import "./style.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { updateCategory } from "../../categorySlice";
-import SwiperSlider from "../../../../components/SwiperSilder";
-import MovieListSkeleton from "../../components/MovieListSkeleton";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import queryString from "query-string";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import "react-tabs/style/react-tabs.css";
+import movieApi from "../../../../api/movieApi";
+import SwiperSlider from "../../../../components/SwiperSilder";
+import MovieList from "../../components/MovieList";
+import MovieListSkeleton from "../../components/MovieListSkeleton";
+import "./style.scss";
 
 ListPage.propTypes = {};
 
 function ListPage(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
   const queryParams = queryString.parse(location.search);
 
   const [loading, setLoading] = useState(true);
@@ -32,7 +26,6 @@ function ListPage(props) {
   });
 
   let param = useParams();
-  console.log(param.value);
 
   const movieSlide = [...movieList].slice(0, 5);
   const cate = useSelector((state) => state.category);
@@ -82,42 +75,36 @@ function ListPage(props) {
         page: page,
       }));
     }
-    console.log(("page", page));
   };
 
   useEffect(() => {
-    if(param.value){
-      if (location.pathname == "/") {
-        navigate(`?${queryString.stringify(searchFilter)}`, {replace: true});
+    if (param.value) {
+      if (location.pathname === "/") {
+        navigate(`?${queryString.stringify(searchFilter)}`);
       } else {
-        navigate(`${location.pathname}?${queryString.stringify(searchFilter)}`, {replace: true});
+        navigate(`${location.pathname}?${queryString.stringify(searchFilter)}`);
       }
-    }else {
-      if (location.pathname == "/") {
-        navigate(`?${queryString.stringify(filter)}`, {replace: true});
+    } else {
+      if (location.pathname === "/") {
+        navigate(`?${queryString.stringify(filter)}`);
       } else {
-        navigate(`${location.pathname}?${queryString.stringify(filter)}`, {replace: true});
+        navigate(`${location.pathname}?${queryString.stringify(filter)}`);
       }
     }
-
   }, [filter.page, searchFilter.page, param.value, cate]);
 
   useMemo(() => {
-    setFilter(x => ({
-      ...x,
-      page: 1
-    }))
-  }, [cate])
-
-  useMemo(() => {
-    setFilter((x) => ({
-      ...x,
-      page: Number.parseInt(queryParams.page) || 1,
-    }));
-    setSearchFilter((x) => ({
-      ...x,
-      page: Number.parseInt(queryParams.page) || 1,
-    }));
+    if (param.value) {
+      setSearchFilter((x) => ({
+        ...x,
+        page: Number.parseInt(queryParams.page) || 1,
+      }));
+    } else {
+      setFilter((x) => ({
+        ...x,
+        page: Number.parseInt(queryParams.page) || 1,
+      }));
+    }
   }, [location.search]);
 
   return (

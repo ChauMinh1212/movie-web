@@ -59,11 +59,11 @@
   cursor: pointer;
   background-color: orangered;
   border-radius: 20px;
-  transition: background-color .3s ease;
+  transition: background-color 0.3s ease;
 }
 
-
-.swiper-button-next:after, .swiper-button-prev:after {
+.swiper-button-next:after,
+.swiper-button-prev:after {
   color: #fff;
   font-size: 40px;
   padding: 13px 6px;
@@ -72,5 +72,4 @@
 }
 
 .slide-container {
-
 }

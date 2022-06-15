@@ -1,9 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { useMediaQuery } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
-import { Grid, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
+import PropTypes from "prop-types";
 import "./style.scss";
 
 MovieListSkeleton.propTypes = {
