@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "react-tabs/style/react-tabs.css";
+import categoryApi from "../../../../api/categoryApi";
 import movieApi from "../../../../api/movieApi";
 import SwiperSlider from "../../../../components/SwiperSilder";
 import MovieList from "../../components/MovieList";
@@ -15,7 +16,18 @@ ListPage.propTypes = {};
 function ListPage(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const queryParams = queryString.parse(location.search);
+  const cate = useSelector((state) => state.category);
+  const [cateState, setCateState] = useState(cate);
+  console.log(cateState);
+  const [cateList, setCateList] = useState([]);
+  const queryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+
+    return {
+      ...params,
+      page: Number.parseInt(params.page) || 1,
+    };
+  }, [location.search]);
 
   const [loading, setLoading] = useState(true);
   const [movieList, setMovieList] = useState([]);
@@ -28,15 +40,11 @@ function ListPage(props) {
   let param = useParams();
 
   const movieSlide = [...movieList].slice(0, 5);
-  const cate = useSelector((state) => state.category);
-
-  const [filter, setFilter] = useState({
-    page: Number.parseInt(queryParams.page) || 1,
-  });
-
-  const [searchFilter, setSearchFilter] = useState({
-    page: Number.parseInt(queryParams.page) || 1,
-  });
+  useEffect(() => {
+    navigate(`${location.pathname}?${queryString.stringify(queryParams)}`, {
+      replace: true,
+    });
+  }, [cateState[0]?.id]);
 
   useEffect(() => {
     setLoading(true);
@@ -44,12 +52,16 @@ function ListPage(props) {
       let result = [];
       if (param.value) {
         result = await movieApi.getSearch({
-          ...searchFilter,
+          ...queryParams,
           query: param.value,
         });
       } else {
-        result = await movieApi.getAll({ ...filter, with_genres: cate });
+        result = await movieApi.getAll({
+          ...queryParams,
+          with_genres: cateState[0]?.id,
+        });
       }
+
       setMovieList(result.results);
       setPagination({
         page: result.page,
@@ -60,52 +72,36 @@ function ListPage(props) {
     };
     getMovieList();
     window.scrollTo(0, 0);
-    return () => {};
-  }, [filter, cate, param.value, searchFilter]);
-
-  const handleChangePage = (e, page) => {
-    if (param.value) {
-      setSearchFilter((x) => ({
-        ...x,
-        page: page,
-      }));
-    } else {
-      setFilter((x) => ({
-        ...x,
-        page: page,
-      }));
-    }
-  };
+  }, [queryParams, cateState[0]?.id, param.value]);
 
   useEffect(() => {
-    if (param.value) {
-      if (location.pathname === "/") {
-        navigate(`?${queryString.stringify(searchFilter)}`);
-      } else {
-        navigate(`${location.pathname}?${queryString.stringify(searchFilter)}`);
-      }
-    } else {
-      if (location.pathname === "/") {
-        navigate(`?${queryString.stringify(filter)}`);
-      } else {
-        navigate(`${location.pathname}?${queryString.stringify(filter)}`);
-      }
-    }
-  }, [filter.page, searchFilter.page, param.value, cate]);
+    const getCateList = async () => {
+      const cateList = await categoryApi.getCategory();
+      setCateList(cateList.genres);
+    };
+    getCateList();
+  }, []);
 
   useMemo(() => {
-    if (param.value) {
-      setSearchFilter((x) => ({
-        ...x,
-        page: Number.parseInt(queryParams.page) || 1,
-      }));
+    const catenew = location.pathname.slice(10);
+    console.log("catenew", typeof catenew);
+    const updateCate = cateList.filter((x) => x.name === catenew);
+    setCateState(updateCate);
+  }, [location.pathname]);
+
+  const handleChangePage = (e, page) => {
+    const filter = {
+      ...queryParams,
+      page: page,
+    };
+    if (location.search !== "") {
+      navigate(`${location.pathname}?${queryString.stringify(filter)}`);
     } else {
-      setFilter((x) => ({
-        ...x,
-        page: Number.parseInt(queryParams.page) || 1,
-      }));
+      navigate(`${location.pathname}?${queryString.stringify(filter)}`, {
+        replace: true,
+      });
     }
-  }, [location.search]);
+  };
 
   return (
     <>

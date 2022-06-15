@@ -35,6 +35,10 @@
     img {
       width: 100%;
     }
+    @include mobileAndTablet {
+      display: none;
+    }
+
   }
   &__menu {
     position: relative;

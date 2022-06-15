@@ -100,7 +100,7 @@ function Header(props) {
   return (
     <div className="header">
       <div className="header__top">
-        <Link to="/?page=1" onClick={() => handleOnChangeCategory(null)}>
+        <Link to="/" onClick={() => handleOnChangeCategory({id: null, name: ''})}>
           <img src="https://fptplay.vn/images/logo-2.png" alt="logo" />
         </Link>
         <form
@@ -167,16 +167,16 @@ function Header(props) {
       <div className="header__bot">
         <ul className="header__bot__categoryList">
           <NavLink
-            to="/?page=1"
+            to="/"
             className="header__bot__category"
-            onClick={() => handleOnChangeCategory(null)}
+            onClick={() => handleOnChangeCategory({id: null, name: ''})}
           >
             All
           </NavLink>
           {category.map((x) => (
             <NavLink
-              onClick={() => handleOnChangeCategory(x.id)}
-              to={`/category/${x.name}?page=1`}
+              onClick={() => handleOnChangeCategory({id: x.id, name: x.name})}
+              to={`/category/${x.name}`}
               key={x.id}
               className="header__bot__category"
             >

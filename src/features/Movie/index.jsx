@@ -9,7 +9,7 @@ function MovieFeature(props) {
   return (
     <Routes>
       <Route path="/" element={<ListPage />} />
-      <Route path="/category/*" element={<ListPage />} />
+      <Route path="/category/*" element={<ListPage />} exact/>
       <Route path="/movie/:id" element={<DetailPage />} />
       <Route path="/search/:value" element={<ListPage />} />
       <Route path="/your-follow" element={<FollowPage />} />
