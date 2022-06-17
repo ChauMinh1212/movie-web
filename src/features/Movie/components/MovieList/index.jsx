@@ -12,7 +12,9 @@ function MovieList({ movieList }) {
     <div className="movie_container">
       {movieList.map((x) => (
         <Link to={`/movie/${x.id}`} key={x.id} className="movie_block">
-          <img src={IMG_URL + x.poster_path} alt="" />
+          <div className="movie_block_img">
+            <img src={IMG_URL + x.poster_path} alt="" />
+          </div>
           <p>{x.original_title}</p>
         </Link>
       ))}

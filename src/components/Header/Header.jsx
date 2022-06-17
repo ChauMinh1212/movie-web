@@ -118,7 +118,7 @@ function Header(props) {
         </form>
         {!isLogged && (
           <button className="header__button--login" onClick={handleClickLogin}>
-            Đăng nhập
+            Login with Google
           </button>
         )}
         {isLogged && (
